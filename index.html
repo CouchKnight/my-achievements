@@ -3,33 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <title>My Achievement Pop-Up Mini-App</title>
-  <!--
-    styles.css (Optional): If you have a separate styles.css, link it here.
-    Example: <link rel="stylesheet" href="styles.css" />
+  
+  <!-- 
+    Inline styles for demonstration purposes.
+    You can create a separate styles.css if you prefer.
   -->
-
   <style>
-    /* Inline CSS for quick demo. You can move this to a separate .css file. */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
     }
-
     h1 {
       margin-bottom: 0.5rem;
     }
-
     .achievement-btn {
       margin: 0.25rem 0;
       padding: 0.5rem 1rem;
       font-size: 1rem;
       cursor: pointer;
     }
-
-    /* The popup container (initially hidden via display: none). */
     #achievement-popup {
-      position: fixed; /* Stays in the same place on the screen */
+      position: fixed; /* Pop-up stays in the same spot even if user scrolls */
       top: 1rem;
       right: 1rem;
       background-color: #f9f9f9;
@@ -38,36 +33,43 @@
       border-radius: 8px;
       display: none; /* Initially hidden */
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 9999; /* Make sure the popup is on top of other elements */
+      z-index: 9999; /* Ensures the pop-up appears above other page elements */
     }
-
     #achievement-popup img {
       width: 40px;
       height: 40px;
       float: left;
       margin-right: 1rem;
     }
-
     #achievement-popup h2 {
       margin: 0 0 0.5rem 0;
       font-size: 1.2rem;
     }
-
     #achievement-popup p {
       margin: 0;
+    }
+    .link-to-achievements {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: #007bff;
+    }
+    .link-to-achievements:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
   <h1>My Gamification Achievements Demo</h1>
-  <p>
-    Click the buttons below to test unlocking different achievements.
-    Each achievement will show a popup with a unique icon and description.
-  </p>
+  <p>Click the buttons below to test unlocking different achievements.</p>
 
-  <!-- Example buttons to trigger achievements. -->
-  <!-- In a real site, you'd call "unlockAchievement" at meaningful times (e.g., purchase completed). -->
+  <!-- 
+    Three sample buttons that simulate earning achievements.
+    In a real application, you'd call unlockAchievement() after the user
+    performs meaningful actions (e.g., completing a purchase, writing a review, etc.).
+  -->
   <button class="achievement-btn" onclick="unlockAchievement('first-visit')">
     Trigger "First Visit" Achievement
   </button>
@@ -78,7 +80,28 @@
     Trigger "Wrote a Review" Achievement
   </button>
 
-  <!-- Pop-up container. We'll insert icon, title, and text dynamically in the script. -->
+  <!--
+    Link to the separate "Achievements" page where users can view
+    all achievements and see which are locked/unlocked.
+  -->
+  <div style="margin-top: 20px;">
+    <a href="achievements.html" class="link-to-achievements">View Your Achievements</a>
+  </div>
+
+  <!--
+    Debug Button: Clears achievements from localStorage. 
+    This is for testing only; remove or hide in production.
+  -->
+  <div style="margin-top: 20px;">
+    <button class="achievement-btn" onclick="debugClearAchievements()">
+      DEBUG: Clear Unlocked Achievements
+    </button>
+  </div>
+
+  <!-- 
+    Pop-up container for newly unlocked achievements.
+    We fill its contents dynamically via JavaScript in script.js.
+  -->
   <div id="achievement-popup">
     <img id="achievement-icon" src="" alt="Achievement Icon">
     <div>
@@ -87,10 +110,10 @@
     </div>
   </div>
 
-  <!-- Link to the new Achievements Page -->
-  <a href="achievements.html" class="link-to-achievements">View Your Achievements</a>
-
-  <!-- Our JavaScript logic (external file) -->
+  <!-- 
+    The main JavaScript logic for achievements is kept in script.js.
+    Make sure script.js is in the same directory, or update this path accordingly.
+  -->
   <script src="script.js"></script>
 </body>
 </html>
