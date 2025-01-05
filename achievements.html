@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Achievements</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px auto;
+      max-width: 800px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .achievement-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .achievement-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .achievement-item img {
+      width: 40px;
+      height: auto;
+      margin-right: 10px;
+    }
+    .locked {
+      opacity: 0.5; /* Dim locked achievements */
+    }
+    .unlocked {
+      font-weight: bold; /* Highlight unlocked achievements */
+    }
+  </style>
+</head>
+<body>
+
+<h1>Your Achievements</h1>
+<ul id="achievement-list" class="achievement-list"></ul>
+
+<script src="script.js"></script>
+<script>
+/*********************************************************
+ Dynamically Generate Achievement List
+**********************************************************/
+function displayAchievements() {
+  const achievementList = document.getElementById('achievement-list');
+  
+  // Clear existing list (if any)
+  achievementList.innerHTML = '';
+
+  // Loop through all achievements
+  for (const key in achievementsData) {
+    const achievement = achievementsData[key];
+    
+    // Check if the achievement is unlocked
+    const isUnlocked = localStorage.getItem(key) === 'true';
+
+    // Create list item
+    const listItem = document.createElement('li');
+    listItem.className = `achievement-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+    // Add icon and description
+    listItem.innerHTML = `
+        <img src="${achievement.icon}" alt="${achievement.title}">
+        <span>${achievement.title} - ${isUnlocked ? 'Unlocked' : 'Locked'}</span>`;
+    
+    // Append to the list
+    achievementList.appendChild(listItem);
+  }
+}
+
+// Call the function on page load
+displayAchievements();
+</script>
+
+</body>
+</html>
