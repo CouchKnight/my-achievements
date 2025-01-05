@@ -105,3 +105,22 @@ window.addEventListener('load', () => {
   // whenever someone visits this page for the first time (in this browser).
   unlockAchievement('first-visit');
 });
+
+/*********************************************************
+  debugClearAchievements
+**********************************************************
+ * This function removes all of the achievement keys
+ * stored in localStorage, effectively resetting the user's
+ * progress to "locked" for every achievement.
+ * 
+ * 1. Loops through each key in achievementsData.
+ * 2. Calls localStorage.removeItem(key) to clear it.
+ * 3. Logs a confirmation message, and shows an optional alert.
+**********************************************************/
+function debugClearAchievements() {
+  for (const key in achievementsData) {
+    localStorage.removeItem(key);
+  }
+  console.log("All unlocked achievements were cleared from localStorage.");
+  alert("All unlocked achievements have been reset (cleared) for debugging!");
+}
