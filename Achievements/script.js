@@ -1,7 +1,7 @@
 // Example achievements data structure
 const achievements = {
   "first-visit": {
-    icon: "images/visit-icon.png",
+    icon: "images/note.png",
     text: "You visited the page for the first time!"
   },
   "made-a-purchase": {
