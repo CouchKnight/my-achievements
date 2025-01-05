@@ -1,126 +1,110 @@
 /*********************************************************
-  Basic Achievements Data Structure
+  1) Achievements Data
 **********************************************************
- This object holds each achievement’s details:
- - Unique key: used to identify the achievement in localStorage.
- - icon: the path or URL to the achievement’s icon image.
- - title: short name for the achievement.
- - description: short note about what the user did to earn it.
- 
- You can add more achievements as needed. For example, add a
- "shared-on-social" or "reached-level-10" achievement.
+ This object contains all your achievements in one place.
+ Each key is a unique identifier:
+   - icon: path or URL to the achievement’s icon image
+   - title: short name displayed in popups or the achievements page
+   - description: explains how the achievement is earned
 **********************************************************/
 const achievementsData = {
   "first-visit": {
-    icon: "https://via.placeholder.com/40/0000FF/FFFFFF?text=FV", // Example placeholder image
+    icon: "https://via.placeholder.com/40/0000FF/FFFFFF?text=FV",
     title: "First Visit",
     description: "Thanks for stopping by our site for the first time!"
   },
   "made-a-purchase": {
     icon: "https://via.placeholder.com/40/008000/FFFFFF?text=Buy",
     title: "Made a Purchase",
-    description: "You successfully purchased an item. Enjoy your new goodies!"
+    description: "You successfully purchased an item. Enjoy your goodies!"
   },
   "wrote-a-review": {
     icon: "https://via.placeholder.com/40/FF0000/FFFFFF?text=Rev",
     title: "Wrote a Review",
-    description: "We appreciate your feedback! Thanks for writing a review."
+    description: "We appreciate your feedback!"
   }
 };
 
 /*********************************************************
-  showAchievementPopup
+  2) showAchievementPopup
 **********************************************************
- This function:
- 1. Updates the popup’s content (icon, title, description)
- 2. Shows the popup by changing its "display" style
- 3. Hides the popup after a few seconds (3 seconds in this example)
+ Displays a small popup when an achievement is unlocked.
+ Steps:
+   1. Find the popup container in the DOM (index.html).
+   2. Update the icon, title, and description based on the unlocked achievement.
+   3. Set popup visibility to "block" to show it.
+   4. Fade out or hide after a short duration (3 seconds here).
 **********************************************************/
 function showAchievementPopup(achievementKey) {
+  // "achievement-popup" is defined in index.html
   const popup = document.getElementById('achievement-popup');
-  const iconElement = document.getElementById('achievement-icon');
-  const titleElement = document.getElementById('achievement-title');
-  const descElement = document.getElementById('achievement-description');
+  
+  // If there's no popup container (e.g., we're on achievements.html), do nothing
+  if (!popup) return;
 
-  // Get the achievement info from our data object
   const achievement = achievementsData[achievementKey];
+  
   if (!achievement) {
-    console.warn(`Achievement data not found for key: ${achievementKey}`);
+    console.warn(`No achievement data found for key: ${achievementKey}`);
     return;
   }
 
-  // Set the content
-  iconElement.src = achievement.icon;
-  titleElement.textContent = achievement.title;
-  descElement.textContent = achievement.description;
+  // Populate popup elements
+  document.getElementById('achievement-icon').src = achievement.icon;
+  document.getElementById('achievement-title').textContent = achievement.title;
+  document.getElementById('achievement-description').textContent = achievement.description;
 
-  // Display the popup
+  // Reveal the popup
   popup.style.display = 'block';
 
-  // Hide the popup automatically after 3 seconds
+  // Auto-hide after 3 seconds (3000 ms)
   setTimeout(() => {
     popup.style.display = 'none';
   }, 3000);
 }
 
 /*********************************************************
-  unlockAchievement
+  3) unlockAchievement
 **********************************************************
- This function:
- 1. Checks if the user has already unlocked the achievement
-   (using localStorage).
- 2. If not unlocked yet, we mark it as unlocked in localStorage and
-    display the popup.
- 3. If already unlocked, do nothing (or you could show a different
-    message if you want).
+ Main function to unlock an achievement when triggered.
+ Steps:
+   1. Check if achievement is already unlocked (localStorage).
+   2. If not, store "true" in localStorage to mark as unlocked.
+   3. Call showAchievementPopup() to display the pop-up for the user.
+   4. If already unlocked, optionally log or do nothing.
 **********************************************************/
 function unlockAchievement(key) {
   const alreadyUnlocked = localStorage.getItem(key);
 
   if (!alreadyUnlocked) {
-    // Mark achievement as unlocked in the browser's localStorage
     localStorage.setItem(key, 'true');
-
-    // Show the popup
     showAchievementPopup(key);
+    console.log(`Achievement "${key}" unlocked!`);
   } else {
-    // OPTIONAL: You could show a console log or do something else
-    // if the user already has this achievement
-    console.log(`Achievement "${key}" already unlocked.`);
+    // Already unlocked
+    console.log(`Achievement "${key}" is already unlocked.`);
   }
 }
 
 /*********************************************************
-  (Optional) Auto-Unlock Achievements on Page Load
+  4) (Optional) Auto-Unlock an Achievement on Page Load
 **********************************************************
- If you want to automatically unlock an achievement the first time
- someone ever visits the page, you can do so here. This is only
- triggered once per browser (because localStorage is per browser).
- 
- For example: 
-   unlockAchievement('first-visit');
+ If you want to automatically award "first-visit" or any other
+ achievement the first time a user visits, uncomment the line below.
 **********************************************************/
-window.addEventListener('load', () => {
-  // Example: automatically unlock the "first-visit" achievement
-  // whenever someone visits this page for the first time (in this browser).
-  unlockAchievement('first-visit');
-});
+// window.addEventListener('load', () => unlockAchievement('first-visit') );
 
 /*********************************************************
-  debugClearAchievements
+  5) Debugging Utility: Clear All Unlocked Achievements
 **********************************************************
- * This function removes all of the achievement keys
- * stored in localStorage, effectively resetting the user's
- * progress to "locked" for every achievement.
- * 
- * 1. Loops through each key in achievementsData.
- * 2. Calls localStorage.removeItem(key) to clear it.
- * 3. Logs a confirmation message, and shows an optional alert.
+ This function removes all achievements' unlocked states from localStorage,
+ effectively "resetting" achievement progress in this browser.
+ Note: This is only for testing or debugging. 
 **********************************************************/
 function debugClearAchievements() {
   for (const key in achievementsData) {
     localStorage.removeItem(key);
   }
-  console.log("All unlocked achievements were cleared from localStorage.");
-  alert("All unlocked achievements have been reset (cleared) for debugging!");
+  console.log("All unlocked achievements cleared from localStorage.");
+  alert("All unlocked achievements have been reset for debugging!");
 }
