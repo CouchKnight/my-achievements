@@ -7,7 +7,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px auto;
-      max-width: 800px;
+      max-width: 800px; /* Constrain width for cleaner layout */
     }
     h1 {
       text-align: center;
@@ -16,6 +16,7 @@
       list-style-type: none;
       padding-left: 0;
     }
+    /* Each achievement row with icon + text */
     .achievement-item {
       display: flex;
       align-items: center;
@@ -32,48 +33,73 @@
     .unlocked {
       font-weight: bold; /* Highlight unlocked achievements */
     }
+    .home-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007bff;
+      font-size: 1.2rem;
+    }
+    .home-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
 
-<h1>Your Achievements</h1>
-<ul id="achievement-list" class="achievement-list"></ul>
-
-<script src="script.js"></script>
-<script>
-/*********************************************************
- Dynamically Generate Achievement List
-**********************************************************/
-function displayAchievements() {
-  const achievementList = document.getElementById('achievement-list');
+  <h1>Your Achievements</h1>
   
-  // Clear existing list (if any)
-  achievementList.innerHTML = '';
+  <!--
+    This unordered list is populated at runtime from the script.js data.
+    We'll show each achievement as either locked or unlocked, plus the icon.
+  -->
+  <ul id="achievement-list" class="achievement-list"></ul>
 
-  // Loop through all achievements
-  for (const key in achievementsData) {
-    const achievement = achievementsData[key];
-    
-    // Check if the achievement is unlocked
-    const isUnlocked = localStorage.getItem(key) === 'true';
+  <!-- 
+    Optionally, provide a link back to the main page or any other page.
+  -->
+  <a href="index.html" class="home-link">Back to Home Page</a>
 
-    // Create list item
-    const listItem = document.createElement('li');
-    listItem.className = `achievement-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+  <!-- 
+    Reuse the same script.js file that holds achievementsData 
+    and the relevant functions. 
+  -->
+  <script src="script.js"></script>
 
-    // Add icon and description
-    listItem.innerHTML = `
-        <img src="${achievement.icon}" alt="${achievement.title}">
-        <span>${achievement.title} - ${isUnlocked ? 'Unlocked' : 'Locked'}</span>`;
-    
-    // Append to the list
-    achievementList.appendChild(listItem);
-  }
-}
+  <!-- 
+    We can define a small snippet here to display the achievements 
+    once the page loads. 
+  -->
+  <script>
+    function displayAchievements() {
+      const achievementList = document.getElementById('achievement-list');
+      achievementList.innerHTML = ''; // Clear existing items
 
-// Call the function on page load
-displayAchievements();
-</script>
+      // Loop over each achievement in the achievementsData object
+      for (const key in achievementsData) {
+        const achievement = achievementsData[key];
+
+        // Check if the user has unlocked this achievement
+        const isUnlocked = localStorage.getItem(key) === 'true';
+
+        // Create an <li> item for each achievement
+        const listItem = document.createElement('li');
+        listItem.className = `achievement-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+
+        // Insert the icon and title with locked/unlocked status
+        listItem.innerHTML = `
+          <img src="${achievement.icon}" alt="${achievement.title}">
+          <span>${achievement.title} - ${isUnlocked ? 'Unlocked' : 'Locked'}</span>
+        `;
+
+        achievementList.appendChild(listItem);
+      }
+    }
+
+    // On page load, generate the achievements list dynamically
+    window.addEventListener('load', displayAchievements);
+  </script>
 
 </body>
 </html>
