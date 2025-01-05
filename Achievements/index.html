@@ -1,22 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Achievements Mini-App</title>
-  <!-- OPTIONAL external CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>My Achievement Pop-Up Mini-App</title>
+  <!--
+    styles.css (Optional): If you have a separate styles.css, link it here.
+    Example: <link rel="stylesheet" href="styles.css" />
+  -->
+
+  <style>
+    /* Inline CSS for quick demo. You can move this to a separate .css file. */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .achievement-btn {
+      margin: 0.25rem 0;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* The popup container (initially hidden via display: none). */
+    #achievement-popup {
+      position: fixed; /* Stays in the same place on the screen */
+      top: 1rem;
+      right: 1rem;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none; /* Initially hidden */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 9999; /* Make sure the popup is on top of other elements */
+    }
+
+    #achievement-popup img {
+      width: 40px;
+      height: 40px;
+      float: left;
+      margin-right: 1rem;
+    }
+
+    #achievement-popup h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    #achievement-popup p {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Container for “pop-up” messages -->
-  <div id="achievement-popup" style="display: none;">
+  <h1>My Gamification Achievements Demo</h1>
+  <p>
+    Click the buttons below to test unlocking different achievements.
+    Each achievement will show a popup with a unique icon and description.
+  </p>
+
+  <!-- Example buttons to trigger achievements. -->
+  <!-- In a real site, you'd call "unlockAchievement" at meaningful times (e.g., purchase completed). -->
+  <button class="achievement-btn" onclick="unlockAchievement('first-visit')">
+    Trigger "First Visit" Achievement
+  </button>
+  <button class="achievement-btn" onclick="unlockAchievement('made-a-purchase')">
+    Trigger "Made a Purchase" Achievement
+  </button>
+  <button class="achievement-btn" onclick="unlockAchievement('wrote-a-review')">
+    Trigger "Wrote a Review" Achievement
+  </button>
+
+  <!-- Pop-up container. We'll insert icon, title, and text dynamically in the script. -->
+  <div id="achievement-popup">
     <img id="achievement-icon" src="" alt="Achievement Icon">
-    <span id="achievement-text"></span>
+    <div>
+      <h2 id="achievement-title"></h2>
+      <p id="achievement-description"></p>
+    </div>
   </div>
 
-  <!-- A basic button to demonstrate triggering an achievement -->
-  <button onclick="unlockAchievement('first-visit')">Test Achievement</button>
-
+  <!-- Our JavaScript logic (external file) -->
   <script src="script.js"></script>
 </body>
 </html>
